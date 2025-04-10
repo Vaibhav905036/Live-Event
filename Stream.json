@@ -1,6 +1,6 @@
 {
-  "pre_event": "https://example.com/pre.m3u8",
-  "live_event": "https://example.com/live.m3u8",
-  "backup": "https://example.com/backup.m3u8",
-  "start_time": "2025-04-10T18:00:00Z"
+  "pre_event": "https://vaibhav-love-vanshika-and-vishwas.vercel.app/matchkephele.m3u8",
+  "live_event": "https://vaibhav.vvishwas042.workers.dev/play.m3u8?id=144",
+  "backup": "https://freelivtvopplex.vercel.app/play.m3u8?id=66190",
+  "start_time": "2025-04-10T15:30:00Z"
 }
