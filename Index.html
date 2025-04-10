@@ -148,55 +148,29 @@
     const live_event = document.getElementById("live_event").value.trim();
     const backup = document.getElementById("backup").value.trim();
 
-    const newData = {
+    const data = {
       pre_event: "https://vaibhav-love-vanshika-and-vishwas.vercel.app/matchkephele.m3u8",
       live_event,
       backup,
       start_time: finalUTC
     };
 
-    const githubToken = "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";  // ✅ Apna token daal bhai
-    const githubUsername = "Vaibhav905036";
-    const repoName = "Live-Event";
-    const filePath = "Stream.json";
+    const res = await fetch("/api/update-json", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
 
-    const apiUrl = `https://api.github.com/repos/${githubUsername}/${repoName}/contents/${filePath}`;
+    const statusBox = document.getElementById("status");
 
-    try {
-      const res = await fetch(apiUrl, {
-        headers: {
-          Authorization: `Bearer ${githubToken}`,
-          Accept: "application/vnd.github.v3+json"
-        }
-      });
-
-      const result = await res.json();
-      const sha = result.sha;
-
-      const updateRes = await fetch(apiUrl, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${githubToken}`,
-          Accept: "application/vnd.github.v3+json"
-        },
-        body: JSON.stringify({
-          message: "Updated via Rounder TV form",
-          content: btoa(unescape(encodeURIComponent(JSON.stringify(newData, null, 2)))),
-          sha: sha
-        })
-      });
-
-      const statusBox = document.getElementById("status");
-      if (updateRes.ok) {
-        statusBox.innerHTML = "Successfully submitted! Thanks to work for Rounder TV";
-        statusBox.style.color = "green";
-      } else {
-        statusBox.innerHTML = "Error Updating JSON!";
-        statusBox.style.color = "red";
-      }
-
-    } catch (error) {
-      document.getElementById("status").innerText = "❌ Failed to connect to GitHub.";
+    if (res.ok) {
+      statusBox.innerHTML = "Successfully submitted! Thanks to work for Rounder TV";
+      statusBox.style.color = "green";
+    } else {
+      statusBox.innerHTML = "Error Updating JSON!";
+      statusBox.style.color = "red";
     }
   }
 </script>
