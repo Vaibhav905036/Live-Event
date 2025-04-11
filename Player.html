@@ -3,59 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Rounder TV</title>
-  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.0"></script>
-  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+  <title>Rounder TV Player</title>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <style>
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
-      height: 100%;
-      background-color: #000;
+      background-color: black;
     }
-    .player-container {
-      position: relative;
-      height: 100%;
-      width: 100%;
-    }
-    video.plyr {
-      height: 100%;
-      width: 100%;
-      background-color: #000;
+    #video {
+      width: 100vw;
+      height: 100vh;
     }
     .logo {
       position: absolute;
       top: 10px;
       right: 10px;
-      width: 80px;
-      height: auto;
-      z-index: 9999;
+      width: 100px;
+      z-index: 999;
     }
   </style>
 </head>
 <body>
-  <div class="player-container">
-    <video id="player" class="plyr" controls autoplay></video>
-    <img class="logo" src="https://jmp.sh/s/IA1Q6TAZcf89S32rryXy" alt="Rounder TV Logo" />
-  </div>
+
+  <!-- Logo -->
+  <img src="https://i.postimg.cc/prPwGH09/IMG-20250301-215408-623-removebg-preview.png" class="logo" alt="Logo"/>
+
+  <!-- Video Player -->
+  <video id="video" controls autoplay></video>
 
   <script>
-    const m3u8 = "https://freelivtvopplex.vercel.app/play.m3u8?id=109986";
-
-    const video = document.getElementById("player");
+    var video = document.getElementById('video');
+    var videoSrc = "https://freelivtvopplex.vercel.app/play.m3u8?id=109986"; // your M3U8 link
 
     if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(m3u8);
+      var hls = new Hls();
+      hls.loadSource(videoSrc);
       hls.attachMedia(video);
-    } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-      video.src = m3u8;
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = videoSrc;
     }
-
-    const player = new Plyr(video, {
-      fullscreen: { enabled: true, fallback: true, iosNative: true }
-    });
   </script>
 </body>
 </html>
