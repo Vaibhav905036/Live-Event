@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FREE LIV TV</title>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.0"></script>
+  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+    }
+    .player-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background-color: #000;
+    }
+    .plyr {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: #000;
+    }
+    .logo {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 70px;
+      height: 70px;
+      background: url('https://i.ibb.co/KLnGVYq/roundertv-logo.jpg') no-repeat center;
+      background-size: contain;
+      z-index: 9999;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="player-container" id="playerContainer">
+    <video id="player" class="plyr" controls autoplay></video>
+    <div class="logo"></div>
+  </div>
+
+  <script>
+    async function loadStream() {
+      try {
+        const response = await fetch('https://roundertvliveevent.vercel.app/Stream.json');
+        const data = await response.json();
+        const m3u8 = data.live_event || data.backup;
+
+        if (!m3u8) {
+          alert("No valid stream found in JSON.");
+          return;
+        }
+
+        const video = document.getElementById("player");
+
+        if (Hls.isSupported()) {
+          const hls = new Hls();
+          hls.loadSource(m3u8);
+          hls.attachMedia(video);
+        } else {
+          video.src = m3u8;
+        }
+
+        const player = new Plyr(video, { fullscreen: { enabled: true, fallback: true, iosNative: true } });
+
+      } catch (err) {
+        alert("Error fetching stream: " + err.message);
+      }
+    }
+
+    loadStream();
+  </script>
+</body>
+</html>
