@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rounder TV Live</title>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.0"></script>
+  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      height: 100%;
+      width: 100%;
+    }
+    .player-container {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      background: #000;
+    }
+    video.plyr {
+      width: 100%;
+      height: 100%;
+    }
+    .logo-top-right {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 80px;
+      z-index: 9999;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="player-container" id="playerContainer">
+    <video id="player" class="plyr" controls autoplay></video>
+    <img src="https://i.postimg.cc/prPwGH09/IMG-20250301-215408-623-removebg-preview.png" class="logo-top-right" alt="Logo" id="logoOverlay">
+  </div>
+
+  <script>
+    const m3u8 = "https://tataplaym3u8byfreelivtv.vvishwas042.workers.dev/play.m3u8?id=24";
+    const video = document.getElementById("player");
+
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(m3u8);
+      hls.attachMedia(video);
+    } else {
+      video.src = m3u8;
+    }
+
+    const player = new Plyr(video, {
+      fullscreen: { enabled: true, fallback: true, iosNative: true }
+    });
+
+    window.addEventListener('load', () => {
+      const container = document.getElementById("playerContainer");
+      const logo = document.getElementById("logoOverlay");
+
+      // Fullscreen auto
+      if (container.requestFullscreen) {
+        container.requestFullscreen();
+      } else if (container.webkitRequestFullscreen) {
+        container.webkitRequestFullscreen();
+      } else if (container.msRequestFullscreen) {
+        container.msRequestFullscreen();
+      }
+
+      // Lock to landscape
+      if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock("landscape").catch(e => console.log("Orientation lock failed:", e));
+      }
+
+      // Ensure logo stays visible in fullscreen
+      document.addEventListener('fullscreenchange', () => {
+        const isFullscreen = document.fullscreenElement;
+        if (isFullscreen && !isFullscreen.contains(logo)) {
+          isFullscreen.appendChild(logo);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
